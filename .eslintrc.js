@@ -16,5 +16,27 @@ module.exports = {
       'error',
       { code: 80 },
     ],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    'import/prefer-default-export': 'off',
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/no-unused-vars': 'off',
+    'no-unused-vars': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 };
