@@ -13,8 +13,8 @@ const userSchema = new Schema({
     unique: true,
     index: true,
     validate: {
-      validator(v:any) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      validator(value:string) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       },
       message: '{VALUE} is not a valid email!',
     },

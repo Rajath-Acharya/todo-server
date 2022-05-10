@@ -2,7 +2,7 @@ import {
   NextFunction, Request, Response, Router,
 } from 'express';
 import jwt from 'jsonwebtoken';
-import { generateAccessToken, verifyToken } from '../helpers/token.helper';
+import { generateToken, verifyToken } from '../helpers/token.helper';
 import { AuthErrorMessage } from '../types/auth.type';
 import { createUser, verifyUser } from '../services/auth.service';
 
@@ -44,11 +44,8 @@ authRouter.post('/login', async (req:Request, res:Response) => {
       email,
       password,
     });
-    const { accessToken, refreshToken } = response;
+    const { refreshToken } = response;
     res
-      .cookie('access_token', accessToken, {
-        httpOnly: true,
-      })
       .cookie('refresh_token', refreshToken, {
         httpOnly: true,
       })
@@ -59,25 +56,25 @@ authRouter.post('/login', async (req:Request, res:Response) => {
   }
 });
 
-authRouter.post('/token', async (
-  req:Request | any,
+authRouter.post('/refreshtoken', async (
+  req:Request,
   res:Response,
 ) => {
   const secretKey = process.env.REFRESH_TOKEN_KEY || '';
-  const { refreshToken } = req.body;
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) {
-    return res.status(403).send(AuthErrorMessage.TOKEN_NOT_FOUND);
+  const refreshToken = authHeader && authHeader.split(' ')[1];
+  if (!refreshToken) {
+    return res.status(401).send(AuthErrorMessage.TOKEN_NOT_FOUND);
   }
   try {
-    const decoded = verifyToken(token, secretKey) as JwtPayload;
+    const decoded = verifyToken(refreshToken, secretKey) as JwtPayload;
     if (!decoded) {
       throw new Error(AuthErrorMessage.INVALID_TOKEN);
     }
-    const accessToken = await generateAccessToken(
+    const accessToken = await generateToken(
       { user_id: decoded.user_id },
-      refreshToken,
+      secretKey,
+      '15m',
     );
     return res.status(200).json({ accessToken });
   } catch (error:any) {

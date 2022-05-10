@@ -24,6 +24,7 @@ function verifyToken(token:string, secret:string) {
 }
 
 export {
+  generateToken,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
