@@ -57,7 +57,7 @@ authRouter.post('/refreshtoken', async (
   req:Request,
   res:Response,
 ) => {
-  const secretKey = process.env.REFRESH_TOKEN_KEY || '';
+  const secretKey = (process.env as any).REFRESH_TOKEN_KEY;
   const authHeader = req.headers.authorization;
   const refreshToken = authHeader && authHeader.split(' ')[1];
   if (!refreshToken) {
@@ -83,9 +83,6 @@ authRouter.delete('/logout', async (
   req:Request,
   res:Response,
 ) => {
-  res.clearCookie('access_token', {
-    httpOnly: true,
-  });
   res.clearCookie('refresh_token', {
     httpOnly: true,
   });

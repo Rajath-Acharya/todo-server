@@ -67,7 +67,7 @@ function authorization(
   res:Response,
   next:NextFunction,
 ) {
-  const secretKey = process.env.ACCESS_TOKEN_KEY || '';
+  const secretKey = (process.env as any).ACCESS_TOKEN_KEY;
   const token = req.cookies.access_token;
   if (!token) {
     return res.sendStatus(403);

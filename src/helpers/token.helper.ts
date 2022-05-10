@@ -10,12 +10,12 @@ function generateToken(payload: JwtPayload, secretKey:string, expiry:string) {
 }
 
 function generateAccessToken(payload:JwtPayload, expiry:string) {
-  const secretKey = process.env.ACCESS_TOKEN_KEY || '';
+  const secretKey = (process.env as any).ACCESS_TOKEN_KEY;
   return generateToken(payload, secretKey, expiry);
 }
 
 function generateRefreshToken(payload:JwtPayload, expiry:string) {
-  const secretKey = process.env.REFRESH_TOKEN_KEY || '';
+  const secretKey = (process.env as any).REFRESH_TOKEN_KEY;
   return generateToken(payload, secretKey, expiry);
 }
 

@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 
 async function connectDatabase() {
-  const mongoURI = process.env.MONGO_URI || '';
+  const mongoURI = (process.env as any).MONGO_URI;
   await mongoose.connect(mongoURI);
   console.log('db connected');
 }
