@@ -1,7 +1,4 @@
-import {
-  NextFunction, Request, Response, Router,
-} from 'express';
-import jwt from 'jsonwebtoken';
+import { Request, Response, Router } from 'express';
 import { generateToken, verifyToken } from '../helpers/token.helper';
 import { AuthErrorMessage } from '../types/auth.type';
 import { createUser, verifyUser } from '../services/auth.service';
